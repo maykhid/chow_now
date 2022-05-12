@@ -184,7 +184,8 @@ class SheetChild extends StatefulWidget {
 
 class _SheetChildState extends State<SheetChild> {
   Widget _myWidget = const AllFoodsWidget();
-  bool _switchroute = true;
+  final bool _switchroute = true;
+  var route = routes.allFoods;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -192,7 +193,7 @@ class _SheetChildState extends State<SheetChild> {
       children: [
         AnimatedContainer(
           duration: const Duration(milliseconds: 500),
-          curve: Curves.fastOutSlowIn,
+          curve: Curves.easeIn,
           height: widget._heightOfModalSheet,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -202,7 +203,7 @@ class _SheetChildState extends State<SheetChild> {
                 return SlideTransition(
                   textDirection: TextDirection.ltr,
                   position: Tween<Offset>(
-                          begin: const Offset(1.2, 0), end: const Offset(0, 0))
+                          begin: const Offset(2.0, 0), end: const Offset(0, 0))
                       .animate(animation),
                   child: child,
                 );
@@ -211,28 +212,53 @@ class _SheetChildState extends State<SheetChild> {
             ),
           ),
         ),
-        AnimatedOpacity(
-          opacity: (widget._heightOfModalSheet > 500) ? 1.0 : 0.0,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.fastOutSlowIn,
-          child: AnimatedPadding(
+        if (route == routes.allFoods) ...[
+          AnimatedOpacity(
+            opacity: (widget._heightOfModalSheet > 500) ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 300),
             curve: Curves.fastOutSlowIn,
-            padding: EdgeInsets.only(
-              bottom: (widget._heightOfModalSheet > 500) ? 80.0 : 100.0,
-            ),
-            duration: const Duration(milliseconds: 500),
-            child: InkWell(
-              onTap: () {
-                setState(() {
-                  _myWidget = const SearchFoods();
-                  _switchroute = !_switchroute;
-                });
-                print("Try to transition");
-              },
-              child: const TransformSquare(),
+            child: AnimatedPadding(
+              curve: Curves.fastOutSlowIn,
+              padding: EdgeInsets.only(
+                bottom: (widget._heightOfModalSheet > 500) ? 80.0 : 0.0,
+              ),
+              duration: const Duration(milliseconds: 500),
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    _myWidget = const SearchFoods();
+                    route = routes.search;
+                  });
+                  print(route);
+                },
+                child: const TransformSquare(),
+              ),
             ),
           ),
-        ),
+        ] else ...[
+          AnimatedOpacity(
+            opacity: (widget._heightOfModalSheet > 500) ? 0.0 : 0.0,
+            duration: const Duration(seconds: 1),
+            child: AnimatedPadding(
+              curve: Curves.fastOutSlowIn,
+                padding: EdgeInsets.only(
+                  bottom: (widget._heightOfModalSheet > 500) ? 1000.0 : 0.0,
+                  left: (widget._heightOfModalSheet > 500) ? 400.0 : 0.0,
+                ),
+                duration: const Duration(seconds: 2),
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    _myWidget = const SearchFoods();
+                    route = routes.allFoods;
+                  });
+                  print(route);
+                },
+                child: const TransformSquare(),
+              ),
+            ),
+          ),
+        ],
       ],
     );
   }
@@ -339,7 +365,7 @@ class SearchFoods extends StatelessWidget {
           child: SizedBox(
             height: 30,
             child: ListView.separated(
-                itemCount: 30,
+                itemCount: widgetList.length,
                 separatorBuilder: ((context, index) => const SizedBox.square(
                       dimension: 20,
                     )),
@@ -358,11 +384,12 @@ class SearchFoods extends StatelessWidget {
                               Container(
                                 height: 100,
                                 width: 100,
-                                decoration: const BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(25),
-                                  ),
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          "assets/images/image_$index.jpg"),
+                                      fit: BoxFit.cover),
+                                  borderRadius: BorderRadius.circular(25),
                                 ),
                               ),
 
@@ -601,7 +628,9 @@ class _GridViewWidgetState extends State<GridViewWidget> {
           crossAxisSpacing: 20,
           mainAxisSpacing: 20,
           children: widgetList.map((String value) {
-            return const FoodCard();
+            return FoodCard(
+              imageIndex: value,
+            );
           }).toList(),
         ),
       ),
@@ -612,7 +641,10 @@ class _GridViewWidgetState extends State<GridViewWidget> {
 class FoodCard extends StatelessWidget {
   const FoodCard({
     Key? key,
+    required this.imageIndex,
   }) : super(key: key);
+
+  final String imageIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -635,7 +667,9 @@ class FoodCard extends StatelessWidget {
               width: 120,
               // color: Colors.black,
               decoration: BoxDecoration(
-                color: Colors.black,
+                image: DecorationImage(
+                    image: AssetImage("assets/images/$imageIndex"),
+                    fit: BoxFit.cover),
                 borderRadius: BorderRadius.circular(25),
               ),
             ),
@@ -724,33 +758,19 @@ class TagPill extends StatelessWidget {
   }
 }
 
+enum routes { search, allFoods }
+
 List<String> widgetList = [
-  'A',
-  'B',
-  'C',
-  'D',
-  'E',
-  'F',
-  'G',
-  'H',
-  'I',
-  'J',
-  'K',
-  'L',
-  'M',
-  'N',
-  'O',
-  'P',
-  'Q',
-  'R',
-  'S',
-  'T',
-  'U',
-  'V',
-  'W',
-  'X',
-  'Y',
-  'Z'
+  'image_0.jpg',
+  'image_1.jpg',
+  'image_2.jpg',
+  'image_3.jpg',
+  'image_4.jpg',
+  'image_5.jpg',
+  'image_6.jpg',
+  'image_7.jpg',
+  'image_8.jpg',
+  'image_9.jpg',
 ];
 
 
