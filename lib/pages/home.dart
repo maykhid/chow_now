@@ -257,7 +257,7 @@ class SheetChild extends StatelessWidget {
         ),
         AnimatedOpacity(
           opacity: (_heightOfModalSheet > 500) ? 1.0 : 0.0,
-          duration: const Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 300),
           curve: Curves.fastOutSlowIn,
           child: AnimatedPadding(
             curve: Curves.fastOutSlowIn,
