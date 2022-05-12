@@ -266,6 +266,7 @@ class SearchFoods extends StatelessWidget {
                         children: const [
                           Icon(
                             FontAwesomeIcons.search,
+                            size: 20,
                             color: Colors.grey,
                           ),
                           SizedBox.square(
@@ -291,9 +292,33 @@ class SearchFoods extends StatelessWidget {
               ),
 
               // tags
-              Container(
-                color: Colors.black,
+              SizedBox(
+                // color: Colors.black,
+                width: MediaQuery.of(context).size.width,
                 height: 100,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Row(
+                      children: const [
+                        TagPill(tagName: "Traditional    "),
+                        SizedBox.square(
+                          dimension: 15,
+                        ),
+                        TagPill(tagName: "Salads"),
+                      ],
+                    ),
+                    Row(
+                      children: const [
+                        TagPill(tagName: "International        "),
+                        SizedBox.square(
+                          dimension: 15,
+                        ),
+                        TagPill(tagName: "Salads"),
+                      ],
+                    ),
+                  ],
+                ),
               ),
 
               const Padding(
@@ -319,10 +344,79 @@ class SearchFoods extends StatelessWidget {
                       dimension: 20,
                     )),
                 itemBuilder: ((context, index) {
-                  return Container(
+                  return SizedBox(
                     height: 100,
                     width: MediaQuery.of(context).size.width,
-                    color: Colors.red,
+                    // color: Colors.red,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          child: Row(
+                            children: [
+                              // image
+                              Container(
+                                height: 100,
+                                width: 100,
+                                decoration: const BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(25),
+                                  ),
+                                ),
+                              ),
+
+                              const SizedBox.square(dimension: 15),
+
+                              // food text
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "Amala",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: const [
+                                      Text(
+                                        'N500',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                      SizedBox.square(
+                                        dimension: 8,
+                                      ),
+                                      Text(
+                                        'Chows',
+                                        style: TextStyle(
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        // arrow
+                        const Icon(
+                          FontAwesomeIcons.chevronRight,
+                          color: Colors.purple,
+                          size: 30,
+                        )
+                      ],
+                    ),
                   );
                 })),
           ),
@@ -397,8 +491,11 @@ class TransformSquare extends StatelessWidget {
             width: 110,
             padding: const EdgeInsets.only(top: 500, bottom: 500),
             decoration: const BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.all(Radius.circular(25))),
+              color: Colors.black,
+              borderRadius: BorderRadius.all(
+                Radius.circular(25),
+              ),
+            ),
           ),
         ),
         // circle
@@ -574,6 +671,51 @@ class FoodCard extends StatelessWidget {
                       fontSize: 18),
                 ),
               ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Widget _tagPill(Tag tag) {
+//   return TagPill();
+// }
+
+class TagPill extends StatelessWidget {
+  const TagPill({
+    Key? key,
+    required this.tagName,
+  }) : super(key: key);
+
+  final String tagName;
+  @override
+  Widget build(BuildContext context) {
+    return UnconstrainedBox(
+      child: Container(
+        padding: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          color: Colors.purple.withOpacity(0.25),
+          // shape: BoxShape.circle,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            // text
+            Text(
+              tagName,
+              style: const TextStyle(fontWeight: FontWeight.w400),
+            ),
+
+            const SizedBox(width: 5.0),
+
+            // close icon
+            const Icon(
+              FontAwesomeIcons.solidTimesCircle,
+              size: 15,
+              color: Colors.white,
             ),
           ],
         ),
