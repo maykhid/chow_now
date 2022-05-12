@@ -37,6 +37,8 @@ dependencies:
   google_fonts: ^2.3.2
   modal_bottom_sheet: ^2.0.1
   provider: ^6.0.2
+  font_awesome: ^5.10.1
+  font_awesome_flutter: ^10.1.0
 
 dev_dependencies:
   flutter_test:
