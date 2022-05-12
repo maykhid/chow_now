@@ -20,35 +20,6 @@ class _HomePageState extends State<HomePage> {
 //         BottomSheet.createAnimationController(this);
   // late ScrollController _controller;
 
-  List<String> widgetList = [
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'I',
-    'J',
-    'K',
-    'L',
-    'M',
-    'N',
-    'O',
-    'P',
-    'Q',
-    'R',
-    'S',
-    'T',
-    'U',
-    'V',
-    'W',
-    'X',
-    'Y',
-    'Z'
-  ];
-
   bool expandSheet = false;
   double heightOfModal = 500;
   late BottomSheetController _bsController = BottomSheetController();
@@ -102,7 +73,6 @@ class _HomePageState extends State<HomePage> {
               },
               child: SheetChild(
                 heightOfModalSheet: _bsController.height,
-                widgetList: widgetList,
               ),
             ),
           );
@@ -197,17 +167,24 @@ Chow Now""",
   }
 }
 
-class SheetChild extends StatelessWidget {
+class SheetChild extends StatefulWidget {
   const SheetChild({
     Key? key,
     required double heightOfModalSheet,
-    required this.widgetList,
+    // required this.widgetList,
   })  : _heightOfModalSheet = heightOfModalSheet,
         super(key: key);
 
   final double _heightOfModalSheet;
-  final List<String> widgetList;
+  // final List<String> widgetList;
 
+  @override
+  State<SheetChild> createState() => _SheetChildState();
+}
+
+class _SheetChildState extends State<SheetChild> {
+  Widget _myWidget = const AllFoodsWidget();
+  bool _switchroute = true;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -216,55 +193,187 @@ class SheetChild extends StatelessWidget {
         AnimatedContainer(
           duration: const Duration(milliseconds: 500),
           curve: Curves.fastOutSlowIn,
-          height: _heightOfModalSheet,
+          height: widget._heightOfModalSheet,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 80,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Container(
-                          // color: Colors.black,
-                          width: 50,
-                          height: 10,
-                          decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                      const Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          'All Foods',
-                          style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                GridViewWidget(widgetList: widgetList),
-              ],
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 500),
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                return SlideTransition(
+                  textDirection: TextDirection.ltr,
+                  position: Tween<Offset>(
+                          begin: const Offset(1.2, 0), end: const Offset(0, 0))
+                      .animate(animation),
+                  child: child,
+                );
+              },
+              child: _myWidget,
             ),
           ),
         ),
         AnimatedOpacity(
-          opacity: (_heightOfModalSheet > 500) ? 1.0 : 0.0,
+          opacity: (widget._heightOfModalSheet > 500) ? 1.0 : 0.0,
           duration: const Duration(milliseconds: 300),
           curve: Curves.fastOutSlowIn,
           child: AnimatedPadding(
             curve: Curves.fastOutSlowIn,
-              padding: EdgeInsets.only(bottom: (_heightOfModalSheet > 500) ? 80.0 : 100.0,),
-              duration: const Duration(milliseconds: 500),
-              child: const TransformSquare()),
+            padding: EdgeInsets.only(
+              bottom: (widget._heightOfModalSheet > 500) ? 80.0 : 100.0,
+            ),
+            duration: const Duration(milliseconds: 500),
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  _myWidget = const SearchFoods();
+                  _switchroute = !_switchroute;
+                });
+                print("Try to transition");
+              },
+              child: const TransformSquare(),
+            ),
+          ),
         ),
+      ],
+    );
+  }
+}
+
+class SearchFoods extends StatelessWidget {
+  const SearchFoods({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // search and tags
+        SizedBox(
+          height: 240,
+          width: MediaQuery.of(context).size.width,
+          // color: Colors.yellow,
+          child: Column(
+            children: [
+              // search for stuff
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // search
+                    SizedBox(
+                      child: Row(
+                        children: const [
+                          Icon(
+                            FontAwesomeIcons.search,
+                            color: Colors.grey,
+                          ),
+                          SizedBox.square(
+                            dimension: 10,
+                          ),
+                          Text(
+                            'Search for stuff',
+                            style: TextStyle(
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const Icon(
+                      FontAwesomeIcons.solidTimesCircle,
+                      color: Colors.grey,
+                      size: 15,
+                    ),
+                  ],
+                ),
+              ),
+
+              // tags
+              Container(
+                color: Colors.black,
+                height: 100,
+              ),
+
+              const Padding(
+                padding: EdgeInsets.only(top: 15.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Results',
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        // list of meals
+        Expanded(
+          child: SizedBox(
+            height: 30,
+            child: ListView.separated(
+                itemCount: 30,
+                separatorBuilder: ((context, index) => const SizedBox.square(
+                      dimension: 20,
+                    )),
+                itemBuilder: ((context, index) {
+                  return Container(
+                    height: 100,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.red,
+                  );
+                })),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class AllFoodsWidget extends StatelessWidget {
+  const AllFoodsWidget({
+    Key? key,
+    // required this.widgetList,
+  }) : super(key: key);
+
+  // final List<String> widgetList;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 80,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Container(
+                  // color: Colors.black,
+                  width: 50,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+              const Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'All Foods',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const GridViewWidget(),
       ],
     );
   }
@@ -316,10 +425,10 @@ class TransformSquare extends StatelessWidget {
 class GridViewWidget extends StatefulWidget {
   const GridViewWidget({
     Key? key,
-    required this.widgetList,
+    // required this.widgetList,
   }) : super(key: key);
 
-  final List<String> widgetList;
+  // final List<String> widgetList;
 
   @override
   State<GridViewWidget> createState() => _GridViewWidgetState();
@@ -394,7 +503,7 @@ class _GridViewWidgetState extends State<GridViewWidget> {
           childAspectRatio: 0.85,
           crossAxisSpacing: 20,
           mainAxisSpacing: 20,
-          children: widget.widgetList.map((String value) {
+          children: widgetList.map((String value) {
             return const FoodCard();
           }).toList(),
         ),
@@ -472,6 +581,36 @@ class FoodCard extends StatelessWidget {
     );
   }
 }
+
+List<String> widgetList = [
+  'A',
+  'B',
+  'C',
+  'D',
+  'E',
+  'F',
+  'G',
+  'H',
+  'I',
+  'J',
+  'K',
+  'L',
+  'M',
+  'N',
+  'O',
+  'P',
+  'Q',
+  'R',
+  'S',
+  'T',
+  'U',
+  'V',
+  'W',
+  'X',
+  'Y',
+  'Z'
+];
+
 
       // bottomSheet: BottomSheet(
       //   animationController: _controller,
