@@ -51,7 +51,7 @@ class _SheetChildState extends State<SheetChild> {
                     _myWidget = const SearchFoods();
                     route = routes.search;
                   });
-                  print(route);
+                  
                 },
                 child: const TransformSquare(),
               ),
@@ -75,7 +75,7 @@ class _SheetChildState extends State<SheetChild> {
                     _myWidget = const AllFoodsWidget();
                     route = routes.allFoods;
                   });
-                  print(route);
+                  
                 },
                 child: const TransformSquare(),
               ),

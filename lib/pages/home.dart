@@ -1,4 +1,4 @@
-import 'package:chow_now/controller/bottom_sheet_controller.dart';
+import '../controller/bottom_sheet_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';

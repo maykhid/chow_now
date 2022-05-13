@@ -36,7 +36,7 @@ class _SearchFoodsState extends State<SearchFoods> {
                       child: Row(
                         children: const [
                           Icon(
-                            FontAwesomeIcons.search,
+                            FontAwesomeIcons.magnifyingGlass,
                             size: 20,
                             color: Colors.grey,
                           ),
@@ -54,7 +54,7 @@ class _SearchFoodsState extends State<SearchFoods> {
                     ),
 
                    const Icon(
-                     FontAwesomeIcons.solidTimesCircle,
+                     FontAwesomeIcons.solidCircleXmark,
                      color: Colors.grey,
                      size: 15,
                    ),

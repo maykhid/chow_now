@@ -40,7 +40,7 @@ class TransformSquare extends StatelessWidget {
 
         // searck icon
         const Icon(
-          FontAwesomeIcons.search,
+          FontAwesomeIcons.magnifyingGlass,
           color: Colors.white,
           size: 24,
         )

@@ -16,7 +16,6 @@ class BottomSheetController with ChangeNotifier {
 
   void _incrementHeight() {
     _height += 500;
-    print("Incrementing height$_height");
     notifyListeners();
   }
 

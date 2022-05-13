@@ -32,7 +32,7 @@ class TagPill extends StatelessWidget {
 
             // close icon
             const Icon(
-              FontAwesomeIcons.solidTimesCircle,
+              FontAwesomeIcons.solidCircleXmark,
               size: 15,
               color: Colors.white,
             ),
