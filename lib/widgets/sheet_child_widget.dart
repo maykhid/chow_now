@@ -21,7 +21,6 @@ class SheetChild extends StatefulWidget {
 
 class _SheetChildState extends State<SheetChild> {
   Widget _myWidget = const AllFoodsWidget();
-  final bool _switchroute = true;
   var route = routes.allFoods;
   @override
   Widget build(BuildContext context) {
@@ -32,24 +31,10 @@ class _SheetChildState extends State<SheetChild> {
           duration: const Duration(milliseconds: 500),
           curve: Curves.easeIn,
           height: widget._heightOfModalSheet,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 500),
-              transitionBuilder: (Widget child, Animation<double> animation) {
-                return SlideTransition(
-                  textDirection: TextDirection.ltr,
-                  position: Tween<Offset>(
-                          begin: const Offset(2.0, 0), end: const Offset(0, 0))
-                      .animate(animation),
-                  child: child,
-                );
-              },
-              child: _myWidget,
-            ),
-          ),
+          child: TransitionTo(myWidget: _myWidget),
         ),
         if (route == routes.allFoods) ...[
+          // Todo: refactor this animation
           AnimatedOpacity(
             opacity: (widget._heightOfModalSheet > 500) ? 1.0 : 0.0,
             duration: const Duration(milliseconds: 300),
@@ -73,20 +58,21 @@ class _SheetChildState extends State<SheetChild> {
             ),
           ),
         ] else ...[
+          // Todo: refactor this animation
           AnimatedOpacity(
             opacity: (widget._heightOfModalSheet > 500) ? 0.0 : 0.0,
             duration: const Duration(seconds: 1),
             child: AnimatedPadding(
               curve: Curves.fastOutSlowIn,
                 padding: EdgeInsets.only(
-                  bottom: (widget._heightOfModalSheet > 500) ? 1000.0 : 0.0,
-                  left: (widget._heightOfModalSheet > 500) ? 400.0 : 0.0,
+                  bottom: (widget._heightOfModalSheet > 500) ? 750.0 : 0.0,
+                  left: (widget._heightOfModalSheet > 500) ? 300.0 : 0.0,
                 ),
                 duration: const Duration(seconds: 2),
               child: InkWell(
                 onTap: () {
                   setState(() {
-                    _myWidget = const SearchFoods();
+                    _myWidget = const AllFoodsWidget();
                     route = routes.allFoods;
                   });
                   print(route);
@@ -97,6 +83,35 @@ class _SheetChildState extends State<SheetChild> {
           ),
         ],
       ],
+    );
+  }
+}
+
+class TransitionTo extends StatelessWidget {
+  const TransitionTo({
+    Key? key,
+    required Widget myWidget,
+  }) : _myWidget = myWidget, super(key: key);
+
+  final Widget _myWidget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 500),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          return SlideTransition(
+            textDirection: TextDirection.ltr,
+            position: Tween<Offset>(
+                    begin: const Offset(2.0, 0), end: const Offset(0, 0))
+                .animate(animation),
+            child: child,
+          );
+        },
+        child: _myWidget,
+      ),
     );
   }
 }

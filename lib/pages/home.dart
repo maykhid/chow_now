@@ -1,6 +1,6 @@
-
 import 'package:chow_now/controller/bottom_sheet_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
@@ -20,8 +20,6 @@ class _HomePageState extends State<HomePage> {
 //         BottomSheet.createAnimationController(this);
   // late ScrollController _controller;
 
-  bool expandSheet = false;
-  double heightOfModal = 500;
   late BottomSheetController _bsController = BottomSheetController();
 
   @override
@@ -33,7 +31,7 @@ class _HomePageState extends State<HomePage> {
         context: context,
         closeProgressThreshold: 0.0,
         backgroundColor: Colors.white,
-        expand: expandSheet,
+        // expand: expandSheet,
         isDismissible: false,
         builder: (context) =>
             StatefulBuilder(builder: (context, StateSetter stateOfSheet) {
@@ -136,7 +134,7 @@ class _HomePageState extends State<HomePage> {
     //         );
     //       });
     // }
-
+    _bsController = context.watch<BottomSheetController>();
     return Scaffold(
       body: SizedBox(
         child: Stack(
@@ -149,16 +147,51 @@ class _HomePageState extends State<HomePage> {
                 fit: BoxFit.fitWidth,
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 25, top: 120),
-              child: Text(
-                """Find Your
-Chow Now""",
-                style: TextStyle(
-                  fontSize: 50,
-                  fontWeight: FontWeight.bold,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AnimatedOpacity(
+                  opacity: (_bsController.height > 500) ? 1.0 : 1.0,
+                  duration: const Duration(milliseconds: 1000),
+                  curve: Curves.fastOutSlowIn,
+                  child: AnimatedPadding(
+                    curve: Curves.fastLinearToSlowEaseIn,
+                    duration: const Duration(seconds: 2),
+                    padding: EdgeInsets.only(
+                      top: 30,
+                      right: (_bsController.height > 500) ? 500.0 : 0.0,
+                      left: (_bsController.height < 500) ? 0 : 25
+                    ),
+                    child: Container(
+                      height: 70,
+                      width: 70,
+                      padding: const EdgeInsets.all(8),
+                      child: SvgPicture.asset(
+                        "assets/images/four_dots.svg",
+                      ),
+                      decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(15))),
+                    ),
+                  ),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 25, top: 30),
+                  child: Column(
+                    children: const [
+                      Text(
+                        """Find Your
+Chow Now""",
+                        style: TextStyle(
+                          fontSize: 45,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -166,9 +199,6 @@ Chow Now""",
     );
   }
 }
-
-
-
 
 // Widget _tagPill(Tag tag) {
 //   return TagPill();

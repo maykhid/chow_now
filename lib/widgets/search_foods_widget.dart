@@ -4,11 +4,16 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../pages/home.dart';
 import 'tag_pill_widget.dart';
 
-class SearchFoods extends StatelessWidget {
+class SearchFoods extends StatefulWidget {
   const SearchFoods({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<SearchFoods> createState() => _SearchFoodsState();
+}
+
+class _SearchFoodsState extends State<SearchFoods> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -48,11 +53,11 @@ class SearchFoods extends StatelessWidget {
                       ),
                     ),
 
-                    const Icon(
-                      FontAwesomeIcons.solidTimesCircle,
-                      color: Colors.grey,
-                      size: 15,
-                    ),
+                   const Icon(
+                     FontAwesomeIcons.solidTimesCircle,
+                     color: Colors.grey,
+                     size: 15,
+                   ),
                   ],
                 ),
               ),
@@ -177,10 +182,13 @@ class SearchFoods extends StatelessWidget {
                         ),
 
                         // arrow
-                        const Icon(
-                          FontAwesomeIcons.chevronRight,
-                          color: Colors.purple,
-                          size: 30,
+                        InkWell(
+                          onTap: () {},
+                          child: const Icon(
+                            FontAwesomeIcons.chevronRight,
+                            color: Colors.purple,
+                            size: 30,
+                          ),
                         )
                       ],
                     ),
@@ -192,4 +200,3 @@ class SearchFoods extends StatelessWidget {
     );
   }
 }
-
