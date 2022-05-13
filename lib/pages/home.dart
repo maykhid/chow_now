@@ -14,12 +14,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-// double _heightOfModalSheet = MediaQuery.of(context).size.height * 0.6;
-
-//     late AnimationController _controller =
-//         BottomSheet.createAnimationController(this);
-  // late ScrollController _controller;
-
   late BottomSheetController _bsController = BottomSheetController();
 
   @override
@@ -31,28 +25,12 @@ class _HomePageState extends State<HomePage> {
         context: context,
         closeProgressThreshold: 0.0,
         backgroundColor: Colors.white,
-        // expand: expandSheet,
         isDismissible: false,
         builder: (context) =>
             StatefulBuilder(builder: (context, StateSetter stateOfSheet) {
           return Material(
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
-              // onTap: () {
-              //   stateOfSheet(() {
-              //     // expandSheet = !expandSheet;
-              //     // // if (expandSheet) {
-              //     // heightOfModal += 50;
-              //     // print(expandSheet);
-              //     // } else {
-              //     //   heightOfModal = 500;
-              //     // }
-              //     // heightOfModal += 100;
-
-              //     // print(heightOfModal);
-              //     _bsController.incrementHeight();
-              //   });
-              // },
               // Todo: write logic to prevent the sheet from going below 500.
               onVerticalDragEnd: (details) {
                 stateOfSheet(
@@ -65,7 +43,6 @@ class _HomePageState extends State<HomePage> {
                       // Up Swipe
                       _bsController.incrementHeight();
                     }
-                    // _bsController.incrementHeight();
                   },
                 );
               },
@@ -77,7 +54,6 @@ class _HomePageState extends State<HomePage> {
         }),
       );
     });
-    // _controller = ScrollController();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       _bsController = context.watch<BottomSheetController>();
     });
@@ -87,53 +63,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Future showBottomSheet(BuildContext context) {
-    //   return showModalBottomSheet<dynamic>(
-    //       useRootNavigator: true,
-    //       barrierColor: Colors.black.withOpacity(0.5),
-    //       isScrollControlled: true,
-    //       context: context,
-    //       builder: (BuildContext bc) {
-    //         return ConstrainedBox(
-    //           constraints: BoxConstraints(
-    //               maxHeight: MediaQuery.of(context).size.height * 0.9),
-    //           child: Container(
-    //             decoration: const BoxDecoration(
-    //                 color: Colors.blue,
-    //                 borderRadius: BorderRadius.only(
-    //                     topLeft: Radius.circular(25.0),
-    //                     topRight: Radius.circular(25.0))),
-    //             child: ListView(
-    //               shrinkWrap: true,
-    //               children: const [
-    //                 Padding(
-    //                   padding: EdgeInsets.fromLTRB(30, 30, 30, 45),
-    //                   child: Text(
-    //                     'Choose Album',
-    //                     textAlign: TextAlign.center,
-    //                   ),
-    //                 ),
-    //                 FoodCard(),
-    //                 FoodCard(),
-    //                 FoodCard(),
-    //                 FoodCard(),
-    //                 FoodCard(),
-    //                 FoodCard(),
-    //                 FoodCard(),
-    //                 FoodCard(),
-    //                 FoodCard(),
-    //                 FoodCard(),
-    //                 FoodCard(),
-    //                 FoodCard(),
-    //                 FoodCard(),
-    //                 FoodCard(),
-    //                 FoodCard(),
-    //               ],
-    //             ),
-    //           ),
-    //         );
-    //       });
-    // }
     _bsController = context.watch<BottomSheetController>();
     return Scaffold(
       body: SizedBox(
@@ -160,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                     padding: EdgeInsets.only(
                       top: 30,
                       right: (_bsController.height > 500) ? 500.0 : 0.0,
-                      left: (_bsController.height < 500) ? 0 : 25
+                      left: (_bsController.height < 500) ? 0 : 25,
                     ),
                     child: Container(
                       height: 70,
@@ -171,8 +100,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       decoration: const BoxDecoration(
                           color: Colors.white,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(15))),
+                          borderRadius: BorderRadius.all(Radius.circular(15))),
                     ),
                   ),
                 ),
@@ -200,10 +128,6 @@ Chow Now""",
   }
 }
 
-// Widget _tagPill(Tag tag) {
-//   return TagPill();
-// }
-
 List<String> widgetList = [
   'image_0.jpg',
   'image_1.jpg',
@@ -216,25 +140,3 @@ List<String> widgetList = [
   'image_8.jpg',
   'image_9.jpg',
 ];
-
-
-      // bottomSheet: BottomSheet(
-      //   animationController: _controller,
-      //   onDragStart: (details) {
-      //     setState(() {
-      //       _heightOfModalSheet *= 2;
-      //       print(_heightOfModalSheet);
-      //     });
-      //   },
-      //   // onDragEnd: (details, {isClosing = true}) {
-      //   //   setState(() {
-      //   //     _heightOfModalSheet = 500 * 2;
-      //   //     print(details.primaryVelocity);
-      //   //   });
-      //   // },
-      //   backgroundColor: Colors.white,
-      //   builder: (BuildContext context) {
-      //     return SheetChild(heightOfModalSheet: _heightOfModalSheet, widgetList: widgetList);
-      //   },
-      //   onClosing: () {},
-      // ),
